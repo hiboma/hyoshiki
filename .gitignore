@@ -1,0 +1,13 @@
+node_modules/
+test-results/
+.playwright-mcp/
+.claude/
+
+# Development screenshots
+*.png
+!data/signs/*.png
+!data/sprite.png
+
+# OS files
+.DS_Store
+Thumbs.db
