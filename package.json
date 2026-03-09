@@ -1,0 +1,19 @@
+{
+  "name": "hyoshiki",
+  "version": "1.0.0",
+  "description": "子供向け交通標識読み上げブラウザアプリ",
+  "scripts": {
+    "test": "npx playwright test"
+  },
+  "keywords": ["traffic-signs", "kids", "japanese", "speech-synthesis"],
+  "author": "hiboma",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hiboma/hyoshiki.git"
+  },
+  "homepage": "https://hiboma.github.io/hyoshiki/",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}
