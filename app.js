@@ -173,27 +173,6 @@ const haptics = (() => {
 
   backBtn.addEventListener("click", closeCard);
 
-  // --- 権利情報 ---
-
-  const licenseLink = document.getElementById("license-link");
-  const licenseOverlay = document.getElementById("license-overlay");
-  const licenseCloseBtn = document.getElementById("license-close-btn");
-
-  licenseLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    licenseOverlay.classList.remove("hidden");
-  });
-
-  licenseCloseBtn.addEventListener("click", () => {
-    licenseOverlay.classList.add("hidden");
-  });
-
-  licenseOverlay.addEventListener("click", (e) => {
-    if (e.target === licenseOverlay) {
-      licenseOverlay.classList.add("hidden");
-    }
-  });
-
   // --- 説明ボトムシート ---
 
   const descBtn = document.getElementById("desc-btn");
