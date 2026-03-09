@@ -33,6 +33,34 @@ const haptics = (() => {
   let currentIndex = 0;
   let filteredSigns = signs; // 現在表示中の標識リスト
 
+  // 入り口ページ
+  const landingPage = document.getElementById("landing-page");
+  const startBtn = document.getElementById("start-btn");
+  const parentBtn = document.getElementById("parent-btn");
+  const parentOverlay = document.getElementById("parent-overlay");
+  const parentCloseBtn = document.getElementById("parent-close-btn");
+
+  startBtn.addEventListener("click", () => {
+    haptics.tap();
+    landingPage.classList.add("hidden");
+    gridPage.classList.remove("hidden");
+    buildGrid();
+  });
+
+  parentBtn.addEventListener("click", () => {
+    parentOverlay.classList.remove("hidden");
+  });
+
+  parentCloseBtn.addEventListener("click", () => {
+    parentOverlay.classList.add("hidden");
+  });
+
+  parentOverlay.addEventListener("click", (e) => {
+    if (e.target === parentOverlay) {
+      parentOverlay.classList.add("hidden");
+    }
+  });
+
   // ページ要素
   const gridPage = document.getElementById("grid-page");
   const cardPage = document.getElementById("card-page");
@@ -102,10 +130,10 @@ const haptics = (() => {
       });
       gridEl.appendChild(item);
     });
-    requestAnimationFrame(applySpritePositions);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(applySpritePositions);
+    });
   }
-
-  buildGrid();
 
   // --- カテゴリフィルタ ---
 
@@ -144,27 +172,6 @@ const haptics = (() => {
   }
 
   backBtn.addEventListener("click", closeCard);
-
-  // --- 権利情報 ---
-
-  const licenseLink = document.getElementById("license-link");
-  const licenseOverlay = document.getElementById("license-overlay");
-  const licenseCloseBtn = document.getElementById("license-close-btn");
-
-  licenseLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    licenseOverlay.classList.remove("hidden");
-  });
-
-  licenseCloseBtn.addEventListener("click", () => {
-    licenseOverlay.classList.add("hidden");
-  });
-
-  licenseOverlay.addEventListener("click", (e) => {
-    if (e.target === licenseOverlay) {
-      licenseOverlay.classList.add("hidden");
-    }
-  });
 
   // --- 説明ボトムシート ---
 

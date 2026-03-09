@@ -1,5 +1,12 @@
 const { test, expect } = require("@playwright/test");
 
+// ランディングページからグリッドページへ遷移するヘルパー
+async function goToGrid(page) {
+  await page.goto("/");
+  await page.locator("#start-btn").click();
+  await expect(page.locator("#grid-page")).toBeVisible();
+}
+
 // ==================== フォント仕様 ====================
 // フォントサイズの変更は承認が必要です。
 // 変更する場合はテストの期待値も合わせて更新してください。
@@ -21,9 +28,43 @@ const FONT_SPECS = {
   backBtn: { fontSize: "15px", fontWeight: "600" },
 };
 
+test.describe("入り口ページ", () => {
+  test("ランディングページが表示されます", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("#landing-page")).toBeVisible();
+    await expect(page.locator("#start-btn")).toBeVisible();
+    await expect(page.locator("#parent-btn")).toBeVisible();
+  });
+
+  test("スタートボタンでグリッドページに遷移します", async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#start-btn").click();
+    await expect(page.locator("#grid-page")).toBeVisible();
+    await expect(page.locator("#landing-page")).toBeHidden();
+  });
+
+  test("保護者向け情報がポップアップで表示されます", async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#parent-btn").click();
+    await expect(page.locator("#parent-overlay")).toBeVisible();
+    const text = await page.locator("#parent-body").textContent();
+    expect(text).toContain("教育目的");
+    expect(text).toContain("広告");
+    expect(text).toContain("Content Security Policy");
+  });
+
+  test("保護者向け情報を閉じることができます", async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#parent-btn").click();
+    await expect(page.locator("#parent-overlay")).toBeVisible();
+    await page.locator("#parent-close-btn").click();
+    await expect(page.locator("#parent-overlay")).toBeHidden();
+  });
+});
+
 test.describe("グリッドページ", () => {
   test("標識がグリッドに表示されます", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     const items = page.locator(".grid-item");
     await expect(items.first()).toBeVisible();
     const count = await items.count();
@@ -31,7 +72,7 @@ test.describe("グリッドページ", () => {
   });
 
   test("標識画像がコンテナからはみ出しません", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     await page.waitForSelector(".grid-item .grid-sign-img");
 
     const overflows = await page.evaluate(() => {
@@ -56,7 +97,7 @@ test.describe("グリッドページ", () => {
   });
 
   test("カテゴリボタンの形状内テキストのフォントが仕様通りです", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     const span = page.locator("#grid-category-nav .cat-shape-annai > span");
     const fontSize = await span.evaluate((el) => getComputedStyle(el).fontSize);
     const fontWeight = await span.evaluate((el) => getComputedStyle(el).fontWeight);
@@ -65,7 +106,7 @@ test.describe("グリッドページ", () => {
   });
 
   test("カテゴリフィルタで表示が切り替わります", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     const allCount = await page.locator(".grid-item").count();
 
     await page.locator("#grid-category-nav .category-btn[data-category='案内標識']").click();
@@ -76,7 +117,7 @@ test.describe("グリッドページ", () => {
   });
 
   test("ぜんぶボタンで全標識に戻ります", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     const allCount = await page.locator(".grid-item").count();
 
     await page.locator("#grid-category-nav .category-btn[data-category='警戒標識']").click();
@@ -89,7 +130,7 @@ test.describe("グリッドページ", () => {
 
 test.describe("カードページ", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     await page.locator(".grid-item").first().click();
     await expect(page.locator("#card-page")).toBeVisible();
   });
@@ -195,7 +236,7 @@ test.describe("iPad レイアウト", () => {
   test.use({ viewport: { width: 768, height: 1024 } });
 
   test("グリッドが5列で表示されます", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     await page.waitForSelector(".grid-item");
     const columns = await page.evaluate(() => {
       const grid = document.getElementById("grid");
@@ -205,7 +246,7 @@ test.describe("iPad レイアウト", () => {
   });
 
   test("カテゴリナビが中央揃えです", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     const justifyContent = await page.evaluate(() => {
       const nav = document.querySelector(".category-nav");
       return getComputedStyle(nav).justifyContent;
@@ -214,7 +255,7 @@ test.describe("iPad レイアウト", () => {
   });
 
   test("フォントサイズが iPad 仕様通りです", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     await page.locator(".grid-item").first().click();
     await expect(page.locator("#card-page")).toBeVisible();
 
@@ -230,7 +271,7 @@ test.describe("iPad Pro レイアウト", () => {
   test.use({ viewport: { width: 1024, height: 1366 } });
 
   test("グリッドが6列で表示されます", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     await page.waitForSelector(".grid-item");
     const columns = await page.evaluate(() => {
       const grid = document.getElementById("grid");
@@ -240,7 +281,7 @@ test.describe("iPad Pro レイアウト", () => {
   });
 
   test("フォントサイズが iPad Pro 仕様通りです", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
     await page.locator(".grid-item").first().click();
     await expect(page.locator("#card-page")).toBeVisible();
 
@@ -254,7 +295,7 @@ test.describe("iPad Pro レイアウト", () => {
 
 test.describe("カテゴリ連携", () => {
   test("グリッドでフィルタした状態でカードに入るとフィルタが維持されます", async ({ page }) => {
-    await page.goto("/");
+    await goToGrid(page);
 
     await page.locator("#grid-category-nav .category-btn[data-category='警戒標識']").click();
     const filteredCount = await page.locator(".grid-item").count();
