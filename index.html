@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  <title>こうつうひょうしき</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- スタートページ: グリッド一覧 -->
+  <div id="grid-page">
+    <nav id="grid-category-nav" class="category-nav">
+      <button class="category-btn active" data-category="all"><span class="cat-shape cat-shape-all"><span>ぜんぶ</span></span></button>
+      <button class="category-btn" data-category="案内標識"><span class="cat-shape cat-shape-annai"><span>あんない</span></span></button>
+      <button class="category-btn" data-category="警戒標識"><span class="cat-shape cat-shape-keikai"><span>けいかい</span></span></button>
+      <button class="category-btn" data-category="規制標識"><span class="cat-shape cat-shape-kisei"><span>きせい</span></span></button>
+      <button class="category-btn" data-category="指示標識"><span class="cat-shape cat-shape-shiji"><span>しじ</span></span></button>
+    </nav>
+    <div id="grid"></div>
+    <footer id="grid-footer">
+      <a id="license-link" href="#" role="button">権利について</a>
+    </footer>
+  </div>
+
+  <!-- カードページ: 個別表示 -->
+  <div id="card-page" class="hidden">
+    <header>
+      <button id="back-btn" aria-label="もどる">&#9664; もどる</button>
+      <button id="settings-btn" aria-label="設定">&#9881;</button>
+      <span id="counter"></span>
+    </header>
+
+    <div id="card-category-label"></div>
+
+    <main id="card-area">
+      <div id="card">
+        <img id="sign-image" src="" alt="標識">
+        <p id="sign-name-block"></p>
+      </div>
+    </main>
+
+    <div id="desc-btn-area">
+      <button id="desc-btn">おしえて</button>
+    </div>
+
+    <nav>
+      <button id="prev-btn" aria-label="前へ">&#9664;</button>
+      <span id="swipe-hint">&larr; スワイプ &rarr;</span>
+      <button id="next-btn" aria-label="次へ">&#9654;</button>
+    </nav>
+  </div>
+
+  <!-- 設定オーバーレイ -->
+  <div id="settings-overlay" class="hidden">
+    <div id="settings-panel">
+      <h2>せってい</h2>
+
+      <label for="voice-select">こえ</label>
+      <select id="voice-select"></select>
+
+      <label for="rate-range">はやさ</label>
+      <div class="range-row">
+        <span>おそい</span>
+        <input type="range" id="rate-range" min="0.7" max="1.2" step="0.1" value="0.9">
+        <span>はやい</span>
+      </div>
+
+      <label for="pitch-range">たかさ</label>
+      <div class="range-row">
+        <span>ひくい</span>
+        <input type="range" id="pitch-range" min="0.8" max="1.4" step="0.1" value="1.0">
+        <span>たかい</span>
+      </div>
+
+      <button id="test-voice-btn">ためしにきく</button>
+      <button id="settings-close-btn">とじる</button>
+
+      <div id="attribution">
+        <p>標識画像の出典: 国土交通省「道路標識一覧」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 権利情報 -->
+  <div id="license-overlay" class="hidden">
+    <div id="license-panel">
+      <h2>権利について</h2>
+      <div id="license-body">
+        <h3>標識画像の出典</h3>
+        <p>国土交通省「道路標識一覧」より引用しています。</p>
+
+        <h3>標識デザインの著作権</h3>
+        <p>道路標識のデザインは「道路標識、区画線及び道路標示に関する命令」に規定されたものであり、著作権法の対象外です。国土交通省の案内に基づき、利用者に混乱を与えないよう配慮した上で使用しています。</p>
+
+        <h3>免責事項</h3>
+        <p>このアプリは学習目的で作成されたものであり、公式な道路標識の案内ではありません。</p>
+      </div>
+      <button id="license-close-btn">とじる</button>
+    </div>
+  </div>
+
+  <!-- 説明ボトムシート -->
+  <div id="desc-overlay" class="hidden">
+    <div id="desc-sheet">
+      <div id="desc-header">
+        <span id="desc-title">おしえて</span>
+        <button id="desc-close-btn" aria-label="とじる">&times;</button>
+      </div>
+      <p id="desc-text"></p>
+      <button id="desc-replay-btn">もういちど きく</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
