@@ -44,6 +44,7 @@ const haptics = (() => {
     haptics.tap();
     landingPage.classList.add("hidden");
     gridPage.classList.remove("hidden");
+    buildGrid();
   });
 
   parentBtn.addEventListener("click", () => {
@@ -129,10 +130,10 @@ const haptics = (() => {
       });
       gridEl.appendChild(item);
     });
-    requestAnimationFrame(applySpritePositions);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(applySpritePositions);
+    });
   }
-
-  buildGrid();
 
   // --- カテゴリフィルタ ---
 
