@@ -5,6 +5,7 @@ module.exports = defineConfig({
   use: {
     baseURL: "http://localhost:8083",
     viewport: { width: 480, height: 800 },
+    serviceWorkers: "block",
   },
   webServer: {
     command: "python3 -m http.server 8083 --bind 127.0.0.1",
