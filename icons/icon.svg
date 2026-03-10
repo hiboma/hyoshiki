@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#faf8f4"/>
+  <!-- 道路標識の柱 -->
+  <rect x="240" y="260" width="32" height="200" rx="4" fill="#8a8480"/>
+  <!-- 三角形の警戒標識 -->
+  <polygon points="256,80 370,280 142,280" fill="#f5c500" stroke="#3a3632" stroke-width="12" stroke-linejoin="round"/>
+  <!-- 感嘆符 -->
+  <rect x="244" y="140" width="24" height="80" rx="6" fill="#3a3632"/>
+  <circle cx="256" cy="248" r="14" fill="#3a3632"/>
+</svg>
